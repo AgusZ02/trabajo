@@ -7,6 +7,8 @@ public class ProgramaPrincipal {
 		System.out.println("Hello world");
 		InfoLogTrack fichero = FuncionalidadAuxiliar.cargarInfoCSV(rutaFichero);
 		System.out.println(Arrays.toString(fichero.frecCardiaca));
+		int[] Array = fichero.frecCardiaca;
+		System.out.println(Array[1]);
 	}
 	
 }
