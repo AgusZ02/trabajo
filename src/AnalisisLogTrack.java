@@ -11,7 +11,7 @@ public class AnalisisLogTrack {
 	 * @return las estadísticas basicas de duracion, velocidad media y distancia total de la actividad
 	 */
 	public static EstadisticasBasicas obtEstadisticasBasicas(InfoLogTrack pInfo) {
-		return null;
+
 	}
 
 

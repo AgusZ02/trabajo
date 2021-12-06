@@ -16,161 +16,73 @@ public class ProgramaPrincipal {
 		String respuestaFichero = "";
 		switch (respuesta) {
 			case "1":
-				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5) 1");
-				switch (respuestaFichero) {
-					case "1":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete1-01.csv";
-						break;
-					case "2":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete1-02.csv";
-						break;
-					case "3":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete1-03.csv";
-						break;
-					case "4":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete1-04.csv";
-						break;
-					case "5":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete1-05.csv";
-						break;
-				}
-
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				ruta = FunSwitch(1, Integer.valueOf(respuestaFichero));
+				break;
 			case "2":
-				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)2");
-				switch (respuestaFichero) {
-					case "1":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete2-01.csv";
-						break;
-					case "2":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete2-02.csv";
-						break;
-					case "3":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete2-03.csv";
-						break;
-					case "4":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete2-04.csv";
-						break;
-					case "5":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete3-05.csv";
-						break;
-				}
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				ruta = FunSwitch(2, Integer.valueOf(respuestaFichero));
+				break;
 			case "3":
-				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)3");
-				switch (respuestaFichero) {
-					case "1":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete3-01.csv";
-						break;
-					case "2":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete3-02.csv";
-						break;
-					case "3":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete3-03.csv";
-						break;
-					case "4":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete3-04.csv";
-						break;
-					case "5":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete3-05.csv";
-						break;
-
-				}
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				ruta = FunSwitch(3, Integer.valueOf(respuestaFichero));
+				break;
 			case "4":
-				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)4");
-				switch (respuestaFichero) {
-					case "1":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete4-01.csv";
-						break;
-					case "2":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete4-02.csv";
-						break;
-					case "3":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete4-03.csv";
-						break;
-					case "4":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete4-04.csv";
-						break;
-					case "5":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete4-05.csv";
-						break;
-				}
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				ruta = FunSwitch(4, Integer.valueOf(respuestaFichero));
+				break;
 			case "5":
-				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)5");
-				switch (respuestaFichero) {
-					case "1":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete5-01.csv";
-						break;
-					case "2":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete5-02.csv";
-						break;
-					case "3":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete5-03.csv";
-						break;
-					case "4":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete5-04.csv";
-						break;
-					case "5":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete5-05.csv";
-						break;
-				}
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				ruta = FunSwitch(5, Integer.valueOf(respuestaFichero));
+				break;
 			case "6":
 				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
-				switch (respuestaFichero) {
-					case "1":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete6-01.csv";
-						break;
-					case "2":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete6-02.csv";
-						break;
-					case "3":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete6-03.csv";
-						break;
-					case "4":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete6-04.csv";
-						break;
-					case "5":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete6-05.csv";
-						break;
-				}
+				ruta = FunSwitch(6, Integer.valueOf(respuestaFichero));
+				break;
 			case "7":
 				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
-				switch (respuestaFichero) {
-					case "1":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete7-01.csv";
-						break;
-					case "2":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete7-02.csv";
-						break;
-					case "3":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete7-03.csv";
-						break;
-					case "4":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete7-04.csv";
-						break;
-					case "5":
-						ruta = "TrackFiles\\Athlete1\\activity-Athlete7-05.csv";
-						break;
-				}
-
-
-				InfoLogTrack atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
-				System.out.println(Arrays.toString(atletaTrackpoints.frecCardiaca));
-				//FuncionalidadAuxiliar.generarTrackPlot(distancia, FrecuenciaCardiaca, elevacion, "Atleta1", true);
-
+				ruta = FunSwitch(7, Integer.valueOf(respuestaFichero));
+				break;
 		}
 
 
-	}
+		InfoLogTrack atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
+		EstadisticasBasicas BasicStats =AnalisisLogTrack.obtEstadisticasBasicas(atletaTrackpoints);
 
 
-	public static String FunSwitch(int indice){
-		String ruta = "TrackFiles\\Athlete1\\activity-AthleteN-JJ.csv";
+
+
+}
+
+
+
+	public static String FunSwitch(int Atleta, int Actividad){
+		String rutaO = "TrackFiles\\AthleteN\\activity-AthleteN-JJ.csv";
 		String rutaR = "";
-		int
-		switch (indice){
-			case 1:
+		String ruta = rutaO.replace("N", Integer.toString(Atleta));
 
+
+		switch (Actividad){
+			case 1:
+				rutaR = ruta.replace("JJ", "01");
+				break;
+
+			case 2:
+				rutaR = ruta.replace("JJ", "02");
+				break;
+			case 3:
+				rutaR = ruta.replace("JJ", "03");
+				break;
+			case 4:
+				rutaR = ruta.replace("JJ", "04");
+				break;
+			case 5:
+				rutaR = ruta.replace("JJ", "05");
+				break;
 
 		}
+		return rutaR;
 	}
+
 }
 
