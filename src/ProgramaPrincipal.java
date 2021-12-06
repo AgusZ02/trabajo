@@ -47,7 +47,8 @@ public class ProgramaPrincipal {
 
 
 		InfoLogTrack atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
-		EstadisticasBasicas BasicStats =AnalisisLogTrack.obtEstadisticasBasicas(atletaTrackpoints);
+		EstadisticasBasicas Estadisticas = AnalisisLogTrack.obtEstadisticasBasicas(atletaTrackpoints);
+		System.out.println(Estadisticas.fCMedia);
 
 
 
