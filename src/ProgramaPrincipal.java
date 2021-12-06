@@ -3,19 +3,21 @@ import java.util.Scanner;
 
 public class ProgramaPrincipal {
 
-	public static String pregunta(String enunciado){
+	public static String pregunta(String enunciado) {
 		Scanner escaner = new Scanner(System.in);
 		System.out.println(enunciado);
 		String respuesta = escaner.nextLine();
 		return respuesta;
 	}
+
 	public static void main(String[] args) {
 		String ruta = "";
 		String respuesta = pregunta("De qué atleta quieres la informacion? (1-7)");
-		switch (respuesta){
+		String respuestaFichero = "";
+		switch (respuesta) {
 			case "1":
-				String respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
-				switch (respuestaFichero){
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5) 1");
+				switch (respuestaFichero) {
 					case "1":
 						ruta = "TrackFiles\\Athlete1\\activity-Athlete1-01.csv";
 						break;
@@ -34,8 +36,8 @@ public class ProgramaPrincipal {
 				}
 
 			case "2":
-				String respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
-				switch (respuestaFichero){
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)2");
+				switch (respuestaFichero) {
 					case "1":
 						ruta = "TrackFiles\\Athlete1\\activity-Athlete2-01.csv";
 						break;
@@ -51,9 +53,9 @@ public class ProgramaPrincipal {
 					case "5":
 						ruta = "TrackFiles\\Athlete1\\activity-Athlete3-05.csv";
 						break;
-		}
+				}
 			case "3":
-				String respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)3");
 				switch (respuestaFichero) {
 					case "1":
 						ruta = "TrackFiles\\Athlete1\\activity-Athlete3-01.csv";
@@ -73,7 +75,7 @@ public class ProgramaPrincipal {
 
 				}
 			case "4":
-				String respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)4");
 				switch (respuestaFichero) {
 					case "1":
 						ruta = "TrackFiles\\Athlete1\\activity-Athlete4-01.csv";
@@ -92,7 +94,7 @@ public class ProgramaPrincipal {
 						break;
 				}
 			case "5":
-				String respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)5");
 				switch (respuestaFichero) {
 					case "1":
 						ruta = "TrackFiles\\Athlete1\\activity-Athlete5-01.csv";
@@ -111,7 +113,7 @@ public class ProgramaPrincipal {
 						break;
 				}
 			case "6":
-				String respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
 				switch (respuestaFichero) {
 					case "1":
 						ruta = "TrackFiles\\Athlete1\\activity-Athlete6-01.csv";
@@ -130,7 +132,7 @@ public class ProgramaPrincipal {
 						break;
 				}
 			case "7":
-				String respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
+				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
 				switch (respuestaFichero) {
 					case "1":
 						ruta = "TrackFiles\\Athlete1\\activity-Athlete7-01.csv";
@@ -150,13 +152,25 @@ public class ProgramaPrincipal {
 				}
 
 
+				InfoLogTrack atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
+				System.out.println(Arrays.toString(atletaTrackpoints.frecCardiaca));
+				//FuncionalidadAuxiliar.generarTrackPlot(distancia, FrecuenciaCardiaca, elevacion, "Atleta1", true);
 
-		InfoLogTrack atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
-		System.out.println(Arrays.toString(atletaTrackpoints.frecCardiaca));
-		//FuncionalidadAuxiliar.generarTrackPlot(distancia, FrecuenciaCardiaca, elevacion, "Atleta1", true);
+		}
+
 
 	}
 
 
+	public static String FunSwitch(int indice){
+		String ruta = "TrackFiles\\Athlete1\\activity-AthleteN-JJ.csv";
+		String rutaR = "";
+		int
+		switch (indice){
+			case 1:
+
+
+		}
+	}
 }
 
