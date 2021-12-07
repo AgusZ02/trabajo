@@ -43,20 +43,12 @@ public class ProgramaPrincipal {
 				respuestaFichero = pregunta("Qué actividad quieres leer? (1-5)");
 				ruta = FunSwitch(7, Integer.valueOf(respuestaFichero));
 				break;
-		}
-
+	}
 
 		InfoLogTrack atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
-		EstadisticasBasicas Estadisticas = AnalisisLogTrack.obtEstadisticasBasicas(atletaTrackpoints);
-		System.out.println(Estadisticas.fCMedia);
-
-
-
-
+		AnalisisLogTrack.generarInformesTrack(atletaTrackpoints);
+		AnalisisLogTrack.DistanciaEntrePuntos(atletaTrackpoints.latitud, atletaTrackpoints.longitud);
 }
-
-
-
 	public static String FunSwitch(int Atleta, int Actividad){
 		String rutaO = "TrackFiles\\AthleteN\\activity-AthleteN-JJ.csv";
 		String rutaR = "";
@@ -84,6 +76,5 @@ public class ProgramaPrincipal {
 		}
 		return rutaR;
 	}
-
 }
 

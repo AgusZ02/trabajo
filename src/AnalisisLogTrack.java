@@ -11,14 +11,16 @@ public class AnalisisLogTrack {
 	 */
 	public static EstadisticasBasicas obtEstadisticasBasicas(InfoLogTrack pInfo) {
 		EstadisticasBasicas BasicStats = new EstadisticasBasicas();
-		BasicStats.distancia = DistanciaPuntos(pInfo.latitud[0], pInfo.latitud[1], pInfo.longitud[0], pInfo.longitud[2], AnalisisLogTrack.RADIO_TIERRA_KM);
-		double acumulador = 0;
+
+		// Bucle for para sumar todos los registros de FC en la variable sumatorio
+		double sumatorio = 0;
 		for (int i = 0; i < pInfo.frecCardiaca.length; i++) {
-			acumulador += pInfo.frecCardiaca[i];
+			sumatorio += pInfo.frecCardiaca[i];
 		}
-		BasicStats.fCMedia = acumulador / pInfo.frecCardiaca.length;
+		BasicStats.distancia = DistanciaEntrePuntos(pInfo.latitud, pInfo.longitud);
+		BasicStats.fCMedia = sumatorio / pInfo.frecCardiaca.length;
 		BasicStats.duracion = pInfo.tiempo[pInfo.tiempo.length -1];
-		//BasicStats.velocidad;
+		BasicStats.velocidad = (BasicStats.distancia / ((double) BasicStats.duracion / 3600) );
 		return BasicStats;
 	}
 
@@ -30,9 +32,7 @@ public class AnalisisLogTrack {
 	 * @param pInfo    Información de la actividad (track) del atleta
 	 * @param pFichero Nombre (path) del fichero donde se guardará el gráfico generado
 	 */
-	public static void graficarPerfil(InfoLogTrack pInfo, String pFichero) {
-
-	}
+	public static void graficarPerfil(InfoLogTrack pInfo, String pFichero) {  }
 
 
 	/**
@@ -44,7 +44,6 @@ public class AnalisisLogTrack {
 	public static int[] obtDistribucionRC(InfoLogTrack pInfo) {
 		return null;
 	}
-
 
 	/**
 	 * Calcula el consumo de calorías del ciclista durante su actividad basandose
@@ -58,7 +57,6 @@ public class AnalisisLogTrack {
 		return 0.0;
 	}
 
-
 	/**
 	 * Obtiene las estadísticas avanzadas de la actividad realizada
 	 *
@@ -71,20 +69,34 @@ public class AnalisisLogTrack {
 		return null;
 	}
 
-
 	/**
 	 * Genera el informe completo de las actividades
 	 */
-	public static void generarInformesTrack() {
-
+	public static void generarInformesTrack(InfoLogTrack pInfo) {
+		EstadisticasBasicas Informe = obtEstadisticasBasicas(pInfo);
+		System.out.println("Frecuendia cardíaca media: " + Informe.fCMedia + " pulsaciones por minuto.");
+		System.out.println("Duracion de la actividad: " + Informe.duracion + " segundos");
+		System.out.println("Distancia total recorrida: " + Informe.distancia + " Kilometros");
+		System.out.println("Velocidad media del atleta: " + Informe.velocidad + " Kilometros por hora");
 	}
 
 
-	public static float DistanciaPuntos(double lat1, double lat2, double long1, double long2, double Radio) {
-		float Dlat = (float) (lat2 - lat1);
-		float Dlong = (float) (long2 - long1);
-		float a = (float) ((float) Math.pow(Math.sin(Dlat), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.sin(Dlong));
-		float d = (float) (2 * Radio * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-		return (float) d;
+	public static float DistanciaEntrePuntos(double[] lat, double[] longi){
+		//float distancia;
+		//distancia = 0;
+		float Dlat = Math.abs((float) (lat[lat.length-1] - lat[0]));
+		float Dlong = Math.abs((float) (longi[longi.length-1] - longi[0]));
+		float a = (float) ((float) Math.pow(Math.sin(Math.toRadians(Dlat)), 2) + Math.cos(Math.toRadians(lat[0])) * Math.cos(Math.toRadians(lat[lat.length-1])) * Math.sin(Math.toRadians(Dlong)));
+		float d = (float) (2 * AnalisisLogTrack.RADIO_TIERRA_KM * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+		return d;
+		//for (int i = 0; i < lat.length -1; i++) {
+		//	float Dlat = Math.abs((float) (lat[i+1] - lat[i]));
+		//	float Dlong = Math.abs((float) (longi[i+1] - longi[i]));
+		//	float a = (float) ((float) Math.pow(Math.sin(Math.toRadians(Dlat)), 2) + Math.cos(Math.toRadians(lat[i])) * Math.cos(Math.toRadians(lat[i+1])) * Math.sin(Math.toRadians(Dlong)));
+		//	float d = (float) (2 * AnalisisLogTrack.RADIO_TIERRA_KM * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+		//	distancia += d;
+
+		//}
+		//return distancia;
 	}
 }
