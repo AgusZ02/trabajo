@@ -90,7 +90,7 @@ public class AnalisisLogTrack {
 
 	}
 
-
+// Función que dadas dos arrays con valores de latitud y longitud, devuelve la distancia total recorrida.
 	public static float DistanciaEntrePuntos(double[] lat, double[] longi){
 		float distancia;
 		distancia = 0;
