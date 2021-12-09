@@ -17,7 +17,13 @@ public class AnalisisLogTrack {
 		for (int i = 0; i < pInfo.frecCardiaca.length; i++) {
 			sumatorio += pInfo.frecCardiaca[i];
 		}
-		BasicStats.distancia = DistanciaEntrePuntos(pInfo.latitud, pInfo.longitud);
+
+		double d = 0;
+		for (int i = 0; i < pInfo.latitud.length -1; i++) {
+			d += DistanciaEntrePuntos(pInfo.latitud[i], pInfo.latitud[i+1], pInfo.longitud[i], pInfo.longitud[i+1]);
+		}
+
+		BasicStats.distancia = d;
 		BasicStats.fCMedia = sumatorio / pInfo.frecCardiaca.length;
 
 		BasicStats.duracion = pInfo.tiempo[pInfo.tiempo.length -1];
@@ -91,19 +97,14 @@ public class AnalisisLogTrack {
 	}
 
 // Función que dadas dos arrays con valores de latitud y longitud, devuelve la distancia total recorrida.
-	public static float DistanciaEntrePuntos(double[] lat, double[] longi){
-		float distancia;
-		distancia = 0;
-		for (int i = 0; i < lat.length -1; i++) {
-			float Dlat = Math.abs((float) (lat[i+1] - lat[i]));
-			float Dlong = Math.abs((float) (longi[i+1] - longi[i]));
-			Dlat = (float) Math.toRadians(Dlat);
-			Dlong = (float) Math.toRadians(Dlong);
-			float a = (float) ((float) Math.pow(Math.sin(Dlat)/2, 2) + Math.cos(Math.toRadians(lat[i])) * Math.cos(Math.toRadians(lat[i+1])) * Math.pow(Math.sin(Dlong/2),2));
-			float d = (float) (2 * AnalisisLogTrack.RADIO_TIERRA_KM * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-			distancia += d;
+	public static float DistanciaEntrePuntos(double lat1, double lat2, double lon1, double lon2){
+		float Dlat = Math.abs((float) (lat2 - lat1));
+		float Dlong = Math.abs((float) (lon2 - lon1));
+		Dlat = (float) Math.toRadians(Dlat);
+		Dlong = (float) Math.toRadians(Dlong);
+		float a = (float) ((float) Math.pow(Math.sin(Dlat)/2, 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.pow(Math.sin(Dlong/2),2));
+		float d = (float) (2 * AnalisisLogTrack.RADIO_TIERRA_KM * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
 
-		}
-		return distancia;
+		return d;
 	}
 }

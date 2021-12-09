@@ -25,7 +25,7 @@ public class ProgramaPrincipal {
 
 		InfoLogTrack atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
 		AnalisisLogTrack.generarInformesTrack(atletaTrackpoints);
-		AnalisisLogTrack.DistanciaEntrePuntos(atletaTrackpoints.latitud, atletaTrackpoints.longitud);
+
 }
 
 }
