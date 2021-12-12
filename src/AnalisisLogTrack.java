@@ -14,16 +14,17 @@ public class AnalisisLogTrack {
 
 		// Bucle for para sumar todos los registros de FC en la variable sumatorio
 		double sumatorio = 0;
+		double distancia = 0;
+			//For i para sumatorio de
 		for (int i = 0; i < pInfo.frecCardiaca.length; i++) {
 			sumatorio += pInfo.frecCardiaca[i];
 		}
 
-		double d = 0;
 		for (int i = 0; i < pInfo.latitud.length -1; i++) {
-			d += DistanciaEntrePuntos(pInfo.latitud[i], pInfo.latitud[i+1], pInfo.longitud[i], pInfo.longitud[i+1]);
+			distancia += DistanciaEntrePuntos(pInfo.latitud[i], pInfo.latitud[i+1], pInfo.longitud[i], pInfo.longitud[i+1]);
 		}
 
-		BasicStats.distancia = d;
+		BasicStats.distancia = distancia;
 		BasicStats.fCMedia = sumatorio / pInfo.frecCardiaca.length;
 
 		BasicStats.duracion = pInfo.tiempo[pInfo.tiempo.length -1];
@@ -96,7 +97,7 @@ public class AnalisisLogTrack {
 
 	}
 
-// Función que dadas dos arrays con valores de latitud y longitud, devuelve la distancia total recorrida.
+// Función que dadas dos valores de latitud y longitud, devuelve la distancia total recorrida.
 	public static float DistanciaEntrePuntos(double lat1, double lat2, double lon1, double lon2){
 		float Dlat = Math.abs((float) (lat2 - lat1));
 		float Dlong = Math.abs((float) (lon2 - lon1));
