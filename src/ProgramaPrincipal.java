@@ -25,7 +25,7 @@ public class ProgramaPrincipal {
 
 		InfoLogTrack atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
 		AnalisisLogTrack.generarInformesTrack(atletaTrackpoints);
-
+		AnalisisLogTrack.graficarPerfil(atletaTrackpoints, "file1.png");
 }
 
 }

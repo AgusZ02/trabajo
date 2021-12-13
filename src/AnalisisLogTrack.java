@@ -43,13 +43,19 @@ public class AnalisisLogTrack {
 	 * @param pFichero Nombre (path) del fichero donde se guardará el gráfico generado
 	 */
 	public static void graficarPerfil(InfoLogTrack pInfo, String pFichero) {
+
 		//Crear la array con las distancias en cada instante.
-		//Longitud de array: Longitud de array tiempo.
 		double[] arrayDistancias = new double[pInfo.tiempo.length];
 		for (int i = 0; i < pInfo.tiempo.length-1; i++) {
 			arrayDistancias[i] = DistanciaEntrePuntos(pInfo.latitud[i], pInfo.latitud[i+1], pInfo.longitud[i], pInfo.longitud[i+1]);
 		}
-	FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, pInfo.);
+
+		// Convertir frecCardiaca a double[]
+		double[] arrayFC = new double[pInfo.frecCardiaca.length];
+		for (int i = 0; i < arrayFC.length-1; i++) {
+			arrayFC[i] = pInfo.frecCardiaca[i];
+		}
+		FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, true);
 	}
 
 
