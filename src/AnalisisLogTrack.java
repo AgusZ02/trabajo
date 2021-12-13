@@ -49,7 +49,7 @@ public class AnalisisLogTrack {
 		for (int i = 0; i < pInfo.tiempo.length-1; i++) {
 			arrayDistancias[i] = DistanciaEntrePuntos(pInfo.latitud[i], pInfo.latitud[i+1], pInfo.longitud[i], pInfo.longitud[i+1]);
 		}
-
+	FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, pInfo.);
 	}
 
 
