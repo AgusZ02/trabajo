@@ -10,28 +10,29 @@ public class AnalisisLogTrack {
 	 * @return las estadísticas basicas de duracion, velocidad media y distancia total de la actividad
 	 */
 	public static EstadisticasBasicas obtEstadisticasBasicas(InfoLogTrack pInfo) {
-		EstadisticasBasicas BasicStats = new EstadisticasBasicas();
+		EstadisticasBasicas EstBasicas = new EstadisticasBasicas();
 
 		// Bucle for para sumar todos los registros de FC en la variable sumatorio
-		double sumatorio = 0;
-		double distancia = 0;
-			//For i para sumatorio de
+		double sumatorio;
+		double distancia;
+		distancia = 0;
+		sumatorio = 0;
+
+		//Crear el sumatorio de todos los tracks de la frecuencia cardíaca
 		for (int i = 0; i < pInfo.frecCardiaca.length; i++) {
 			sumatorio += pInfo.frecCardiaca[i];
 		}
 
-		for (int i = 0; i < pInfo.latitud.length -1; i++) {
-			distancia += DistanciaEntrePuntos(pInfo.latitud[i], pInfo.latitud[i+1], pInfo.longitud[i], pInfo.longitud[i+1]);
+		for (int i = 1; i < pInfo.latitud.length; i++) {
+			distancia += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
 		}
 
-		BasicStats.distancia = distancia;
-		BasicStats.fCMedia = sumatorio / pInfo.frecCardiaca.length;
+		EstBasicas.distancia = distancia;
+		EstBasicas.fCMedia = sumatorio / pInfo.frecCardiaca.length;
+		EstBasicas.duracion = pInfo.tiempo[pInfo.tiempo.length -1];
+		EstBasicas.velocidad = (EstBasicas.distancia / ((double) EstBasicas.duracion / 3600) );
 
-		BasicStats.duracion = pInfo.tiempo[pInfo.tiempo.length -1];
-
-
-		BasicStats.velocidad = (BasicStats.distancia / ((double) BasicStats.duracion / 3600) );
-		return BasicStats;
+		return EstBasicas;
 	}
 
 
@@ -43,18 +44,22 @@ public class AnalisisLogTrack {
 	 * @param pFichero Nombre (path) del fichero donde se guardará el gráfico generado
 	 */
 	public static void graficarPerfil(InfoLogTrack pInfo, String pFichero) {
+		double sumatorio;
+		sumatorio = 0;
 
 		//Crear la array con las distancias en cada instante.
 		double[] arrayDistancias = new double[pInfo.tiempo.length];
-		for (int i = 0; i < pInfo.tiempo.length-1; i++) {
-			arrayDistancias[i] = DistanciaEntrePuntos(pInfo.latitud[i], pInfo.latitud[i+1], pInfo.longitud[i], pInfo.longitud[i+1]);
+		for (int i = 1; i < arrayDistancias.length; i++) {
+			sumatorio += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
+			arrayDistancias[i] = sumatorio;
 		}
 
 		// Convertir frecCardiaca a double[]
 		double[] arrayFC = new double[pInfo.frecCardiaca.length];
-		for (int i = 0; i < arrayFC.length-1; i++) {
+		for (int i = 0; i < arrayFC.length; i++) {
 			arrayFC[i] = pInfo.frecCardiaca[i];
 		}
+
 		FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, true);
 	}
 
@@ -90,7 +95,15 @@ public class AnalisisLogTrack {
 	 * km más rápido, consumo calórico y desnivel positivo
 	 */
 	public static EstadisticasAvanzadas obtEstadisticasAvanzadas(InfoLogTrack pInfo, double pKg) {
-		return null;
+		EstadisticasAvanzadas Avanzadas = new EstadisticasAvanzadas();
+		double[] distancia = new double[pInfo.tiempo.length];
+
+		for (int i = 1; i < pInfo.tiempo.length; i += 3600) {
+
+			distancia[i] = DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
+		}
+		System.out.println(Arrays.toString(distancia));
+		return Avanzadas;
 	}
 
 	/**
@@ -98,6 +111,7 @@ public class AnalisisLogTrack {
 	 */
 	public static void generarInformesTrack(InfoLogTrack pInfo) {
 		EstadisticasBasicas Informe = obtEstadisticasBasicas(pInfo);
+		EstadisticasAvanzadas InformeAv = obtEstadisticasAvanzadas(pInfo, FuncionalidadAuxiliar.obtPesoAtleta("Athlete7"));
 		int segundosTotales = Informe.duracion;
 		int horas = segundosTotales / 3600;
 		int minutos = (segundosTotales % 3600) / 60;
@@ -107,7 +121,7 @@ public class AnalisisLogTrack {
 		System.out.println("Duracion de la actividad: " + tiempo);
 		System.out.println("Distancia total recorrida: " + Informe.distancia + " Kilometros");
 		System.out.println("Velocidad media del atleta: " + Informe.velocidad + " Kilometros por hora");
-
+		graficarPerfil(pInfo, "Gráfica1");
 
 	}
 
