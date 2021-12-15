@@ -112,7 +112,7 @@ public class AnalisisLogTrack {
 	 */
 	public static void generarInformesTrack(InfoLogTrack pInfo) {
 		EstadisticasBasicas Informe = obtEstadisticasBasicas(pInfo);
-		EstadisticasAvanzadas InformeAv = obtEstadisticasAvanzadas(pInfo, FuncionalidadAuxiliar.obtPesoAtleta("Athlete7"));
+		//EstadisticasAvanzadas InformeAv = obtEstadisticasAvanzadas(pInfo, FuncionalidadAuxiliar.obtPesoAtleta("Athlete7"));
 		int segundosTotales = Informe.duracion;
 		int horas = segundosTotales / 3600;
 		int minutos = (segundosTotales % 3600) / 60;
