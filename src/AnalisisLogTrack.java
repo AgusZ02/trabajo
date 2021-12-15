@@ -61,6 +61,7 @@ public class AnalisisLogTrack {
 		}
 
 		FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, true);
+		FuncionalidadAuxiliar.eliminarPlots();
 	}
 
 
@@ -96,13 +97,13 @@ public class AnalisisLogTrack {
 	 */
 	public static EstadisticasAvanzadas obtEstadisticasAvanzadas(InfoLogTrack pInfo, double pKg) {
 		EstadisticasAvanzadas Avanzadas = new EstadisticasAvanzadas();
-		double[] distancia = new double[pInfo.tiempo.length];
+		double[] arrayDistancia = new double[pInfo.tiempo.length];
 
-		for (int i = 1; i < pInfo.tiempo.length; i += 3600) {
+		for (int i = 1; i < pInfo.tiempo.length; i += 1) {
 
-			distancia[i] = DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
+			arrayDistancia[i] += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]); ;
 		}
-		System.out.println(Arrays.toString(distancia));
+
 		return Avanzadas;
 	}
 
@@ -122,6 +123,7 @@ public class AnalisisLogTrack {
 		System.out.println("Distancia total recorrida: " + Informe.distancia + " Kilometros");
 		System.out.println("Velocidad media del atleta: " + Informe.velocidad + " Kilometros por hora");
 		graficarPerfil(pInfo, "Gráfica1");
+
 
 	}
 
