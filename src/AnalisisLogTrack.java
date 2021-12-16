@@ -112,13 +112,24 @@ public class AnalisisLogTrack {
 	 */
 	public static void generarInformesTrack(InfoLogTrack pInfo) {
 		EstadisticasBasicas Informe = obtEstadisticasBasicas(pInfo);
-		//EstadisticasAvanzadas InformeAv = obtEstadisticasAvanzadas(pInfo, FuncionalidadAuxiliar.obtPesoAtleta("Athlete7"));
+		ZonasFC zonas = FuncionesPropias.ZonasFrecuencia(pInfo);
 		int segundosTotales = Informe.duracion;
 		int horas = segundosTotales / 3600;
 		int minutos = (segundosTotales % 3600) / 60;
 		int segundos = segundosTotales % 60;
 		String tiempo = String.format("%d:%d:%d", horas,minutos,segundos);
 		System.out.println("Frecuendia cardíaca media: " + Informe.fCMedia + " pulsaciones por minuto.");
+		System.out.println("Zonas:");
+
+		System.out.println(pInfo.frecCardiaca.length);
+
+		//System.out.println(zonas.resistecia.length);
+		//System.out.println(zonas.moderado.length);
+		//System.out.println(zonas.ritmo.length);
+		//System.out.println(zonas.umbral.length);
+		//System.out.println(zonas.anaerobico.length);
+
+
 		System.out.println("Duracion de la actividad: " + tiempo);
 		System.out.println("Distancia total recorrida: " + Informe.distancia + " Kilometros");
 		System.out.println("Velocidad media del atleta: " + Informe.velocidad + " Kilometros por hora");
