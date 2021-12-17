@@ -1,15 +1,9 @@
 public class ZonasFC {
-
-    InfoLogTrack pInfo = new InfoLogTrack();
-    int[] resistecia = new int[]{};
-    int[] moderado = new int[]{};
-    int[] ritmo = new int[]{};
-    int[] umbral = new int[]{};
-    int[] anaerobico = new int[]{};
-
-    int resistenciaContador = 0;
-    int moderadoContador = 0;
-    int ritmoContador = 0;
-    int umbralContador = 0;
-    int anaerobicoContador = 0;
+    //Arrays para guardar cada zona de la frecuencia cardíaca
+    //Índices
+    public double resistencia = 0;
+    public double moderado = 0;
+    public double ritmo = 0;
+    public double umbral = 0;
+    public double anaerobico = 0;
 }

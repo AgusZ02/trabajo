@@ -38,25 +38,29 @@ public class FuncionesPropias {
     public static ZonasFC ZonasFrecuencia(InfoLogTrack pInfo) {
 
         ZonasFC zonas = new ZonasFC();
-
         for (int i = 0; i < pInfo.frecCardiaca.length; i++) {
             if (pInfo.frecCardiaca[i] < 123) {
-                zonas.resistecia[zonas.resistenciaContador] = pInfo.frecCardiaca[i];
-                zonas.resistenciaContador += 1;
+                zonas.resistencia += 1;
             } else if (pInfo.frecCardiaca[i] < 153) {
-                zonas.moderado[zonas.moderadoContador] = pInfo.frecCardiaca[i];
-                zonas.moderadoContador += 1;
+                zonas.moderado += 1;
             } else if (pInfo.frecCardiaca[i] < 169) {
-                zonas.ritmo[zonas.ritmoContador] = pInfo.frecCardiaca[i];
-               zonas. ritmoContador += 1;
+               zonas.ritmo += 1;
             } else if (pInfo.frecCardiaca[i] < 184) {
-                zonas.umbral[zonas.umbralContador] = pInfo.frecCardiaca[i];
-               zonas.umbralContador += 1;
+               zonas.umbral += 1;
             } else {
-                zonas.anaerobico[zonas.anaerobicoContador] = pInfo.frecCardiaca[i];
-                zonas.anaerobicoContador += 1;
+                zonas.anaerobico += 1;
             }
         }
         return zonas;
+    }
+    public static double CalculoMedia(int[] array){
+        double sumatorio;
+        sumatorio = 0;
+        for (int i = 0; i < array.length; i++) {
+            sumatorio += array[i];
+
+        }
+        double media = sumatorio/array.length;
+        return media;
     }
 }
