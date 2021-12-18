@@ -6,4 +6,12 @@ public class ZonasFC {
     public double ritmo = 0;
     public double umbral = 0;
     public double anaerobico = 0;
+
+    public int[] arrResistencia;
+    public int[] arrModerado;
+    public int[] arrRitmo;
+    public int[] arrUmbral;
+    public int[] arrAnaerobico;
+
 }
+
