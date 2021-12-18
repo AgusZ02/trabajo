@@ -10,8 +10,10 @@ public class AnalisisLogTrack {
 	 * @return las estadísticas basicas de duracion, velocidad media y distancia total de la actividad
 	 */
 	public static EstadisticasBasicas obtEstadisticasBasicas(InfoLogTrack pInfo) {
-		EstadisticasBasicas EstBasicas = new EstadisticasBasicas();
+		EstadisticasBasicas EstBasicas;
 		double distancia;
+		
+		EstBasicas = new EstadisticasBasicas();
 		distancia = 0;
 
 		//Crear el sumatorio de todos los tracks de la frecuencia cardíaca
@@ -40,7 +42,9 @@ public class AnalisisLogTrack {
 		sumatorio = 0;
 
 		//Crear la array con las distancias en cada instante.
-		double[] arrayDistancias = new double[pInfo.tiempo.length];
+		double[] arrayDistancias;
+		arrayDistancias = new double[pInfo.tiempo.length];
+
 		for (int i = 1; i < arrayDistancias.length; i++) {
 			sumatorio += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
 			arrayDistancias[i] = sumatorio;
@@ -88,8 +92,11 @@ public class AnalisisLogTrack {
 	 * km más rápido, consumo calórico y desnivel positivo
 	 */
 	public static EstadisticasAvanzadas obtEstadisticasAvanzadas(InfoLogTrack pInfo, double pKg) {
-		EstadisticasAvanzadas Avanzadas = new EstadisticasAvanzadas();
-		double[] arrayDistancia = new double[pInfo.tiempo.length];
+		EstadisticasAvanzadas Avanzadas;
+		double[] arrayDistancia;
+
+		Avanzadas = new EstadisticasAvanzadas();
+		arrayDistancia = new double[pInfo.tiempo.length];
 
 		for (int i = 1; i < pInfo.tiempo.length; i += 1) {
 
@@ -104,15 +111,18 @@ public class AnalisisLogTrack {
 	 */
 	public static void generarInformesTrack(InfoLogTrack pInfo) {
 
-		//Inicializar y declarar variables
+		//Inicializar variables
 		EstadisticasBasicas Informe = obtEstadisticasBasicas(pInfo);
 		ZonasFC zonas = FuncionesPropias.ZonasFrecuencia(pInfo);
-		int segundosTotales = Informe.duracion;
-		int horas = segundosTotales / 3600;
-		int minutos = (segundosTotales % 3600) / 60;
-		int segundos = segundosTotales % 60;
+		int segundosTotales, horas, minutos, segundos;
+		String tiempo;
 
-		String tiempo = String.format("%dh:%dm:%ds", horas,minutos,segundos);
+		segundosTotales = Informe.duracion;
+		horas = segundosTotales / 3600;
+		minutos = (segundosTotales % 3600) / 60;
+		segundos = segundosTotales % 60;
+
+		tiempo = String.format("%dh:%dm:%ds", horas,minutos,segundos);
 
 		System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", Informe.fCMedia) + " p/m");
 		//Zonas de esfuerzo
@@ -135,12 +145,14 @@ public class AnalisisLogTrack {
 
 // Función que dadas dos valores de latitud y longitud, devuelve la distancia total recorrida.
 	public static double DistanciaEntrePuntos(double lat1, double lat2, double lon1, double lon2){
-		double Dlat = Math.abs(lat2 - lat1);
-		double Dlong = Math.abs(lon2 - lon1);
+		double Dlat, Dlong, a, d;
+
+		Dlat = Math.abs(lat2 - lat1);
+		Dlong = Math.abs(lon2 - lon1);
 		Dlat = Math.toRadians(Dlat);
 		Dlong = Math.toRadians(Dlong);
-		double a = (Math.pow(Math.sin(Dlat)/2, 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.pow(Math.sin(Dlong/2),2));
-		double d = 2 * AnalisisLogTrack.RADIO_TIERRA_KM * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		a = (Math.pow(Math.sin(Dlat)/2, 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.pow(Math.sin(Dlong/2),2));
+		d = 2 * AnalisisLogTrack.RADIO_TIERRA_KM * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
 		return d;
 	}
