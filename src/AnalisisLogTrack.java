@@ -134,13 +134,13 @@ public class AnalisisLogTrack {
 	}
 
 // Función que dadas dos valores de latitud y longitud, devuelve la distancia total recorrida.
-	public static float DistanciaEntrePuntos(double lat1, double lat2, double lon1, double lon2){
-		float Dlat = Math.abs((float) (lat2 - lat1));
-		float Dlong = Math.abs((float) (lon2 - lon1));
-		Dlat = (float) Math.toRadians(Dlat);
-		Dlong = (float) Math.toRadians(Dlong);
-		float a = (float) ((float) Math.pow(Math.sin(Dlat)/2, 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.pow(Math.sin(Dlong/2),2));
-		float d = (float) (2 * AnalisisLogTrack.RADIO_TIERRA_KM * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+	public static double DistanciaEntrePuntos(double lat1, double lat2, double lon1, double lon2){
+		double Dlat = Math.abs(lat2 - lat1);
+		double Dlong = Math.abs(lon2 - lon1);
+		Dlat = Math.toRadians(Dlat);
+		Dlong = Math.toRadians(Dlong);
+		double a = (Math.pow(Math.sin(Dlat)/2, 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.pow(Math.sin(Dlong/2),2));
+		double d = 2 * AnalisisLogTrack.RADIO_TIERRA_KM * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
 		return d;
 	}
