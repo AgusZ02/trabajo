@@ -39,19 +39,21 @@ public class AnalisisLogTrack {
 	 */
 	public static void graficarPerfil(InfoLogTrack pInfo, String pFichero) {
 		double sumatorio;
-		sumatorio = 0;
+		double[] arrayFC;
+		double[] arrayDistancias;
 
 		//Crear la array con las distancias en cada instante.
-		double[] arrayDistancias;
-		arrayDistancias = new double[pInfo.tiempo.length];
 
+		arrayDistancias = new double[pInfo.tiempo.length];
+		sumatorio = 0;
 		for (int i = 1; i < arrayDistancias.length; i++) {
 			sumatorio += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
 			arrayDistancias[i] = sumatorio;
 		}
 
 		// Convertir frecCardiaca a double[]
-		double[] arrayFC = new double[pInfo.frecCardiaca.length];
+		arrayFC = new double[pInfo.frecCardiaca.length];
+
 		for (int i = 0; i < arrayFC.length; i++) {
 			arrayFC[i] = pInfo.frecCardiaca[i];
 		}
@@ -143,7 +145,7 @@ public class AnalisisLogTrack {
 
 		calorias = estimarConsumoCalorias(atletaTrackpoints, peso);
 		tiempo = String.format("%dh:%dm:%ds", horas,minutos,segundos);
-		System.out.println(calorias);
+		System.out.println("Calorías totales: " + calorias);
 		System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", Informe.fCMedia) + " p/m");
 		//Zonas de esfuerzo
 
