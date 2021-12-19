@@ -10,29 +10,28 @@ public class FuncionesPropias {
         return respuesta;
     }
     //Funcion para cargar la ruta del archivo para leer
-    public static String CargarAtleta(){
-        int Actividad;
-        int Atleta;
+    public static DatosIniciales CargarAtleta(){
+        DatosIniciales dato;
 
-        Atleta = 0;
-        Actividad = 0;
+        dato = new DatosIniciales();
+
         try {
-            while (Atleta < 1 || Atleta > 7){
-            Atleta = FuncionesPropias.pregunta("De qué atleta quieres la informacion? (1-7)");
+            while (dato.atleta < 1 || dato.atleta > 7){
+            dato.atleta = FuncionesPropias.pregunta("De qué atleta quieres la informacion? (1-7)");
         }
-        while (Actividad > 5 || Actividad < 1){
-            Actividad = FuncionesPropias.pregunta("De qué atleta quieres la informacion? (1-5)");
+        while (dato.actividad > 5 || dato.actividad < 1){
+            dato.actividad = FuncionesPropias.pregunta("De qué atleta quieres la informacion? (1-5)");
         }
-
+        dato.ID = String.format("Athlete%d", dato.atleta);
         }
         catch (Exception e){
             System.err.println("Introduce un número válido (1-7)");
             CargarAtleta();
         }
 
-        String ruta = String.format("TrackFiles\\Athlete%d\\activity-Athlete%d-0%d.csv", Atleta, Atleta, Actividad);
-        System.out.printf("Log: %s \n",ruta);
-        return ruta;
+        dato.ruta = String.format("TrackFiles\\Athlete%d\\activity-Athlete%d-0%d.csv", dato.atleta, dato.atleta, dato.actividad);
+        System.out.printf("Log: %s \n",dato.ruta);
+        return dato;
 
     }
     public static ZonasFC ZonasFrecuencia(InfoLogTrack pInfo) {

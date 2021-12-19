@@ -12,7 +12,7 @@ public class AnalisisLogTrack {
 	public static EstadisticasBasicas obtEstadisticasBasicas(InfoLogTrack pInfo) {
 		EstadisticasBasicas EstBasicas;
 		double distancia;
-		
+
 		EstBasicas = new EstadisticasBasicas();
 		distancia = 0;
 
@@ -80,7 +80,20 @@ public class AnalisisLogTrack {
 	 * @return Las calorías consumidas en la actividad.
 	 */
 	public static double estimarConsumoCalorias(InfoLogTrack pInfo, double pKg) {
-		return 0.0;
+		double Dtiempo, Dvelocidad, Ddistancia, caloriasTotales;
+		caloriasTotales = 0;
+		Ddistancia = 0;
+
+		for (int i = 1; i < pInfo.latitud.length; i++) {
+			Dtiempo = pInfo.tiempo[i]-pInfo.tiempo[i-1];
+			System.out.println(Dtiempo);
+			Dvelocidad = DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]) / Dtiempo;
+			double MET = -1.52+0.510*Dvelocidad;
+			caloriasTotales += Dtiempo * (3.5*MET*pKg) /200;
+		}
+		System.out.println(caloriasTotales);
+
+		return caloriasTotales;
 	}
 
 	/**
@@ -109,37 +122,45 @@ public class AnalisisLogTrack {
 	/**
 	 * Genera el informe completo de las actividades
 	 */
-	public static void generarInformesTrack(InfoLogTrack pInfo) {
-
+	public static void generarInformesTrack() {
 		//Inicializar variables
-		EstadisticasBasicas Informe = obtEstadisticasBasicas(pInfo);
-		ZonasFC zonas = FuncionesPropias.ZonasFrecuencia(pInfo);
+		InfoLogTrack atletaTrackpoints;
+		DatosIniciales datos;
+		EstadisticasBasicas Informe;
 		int segundosTotales, horas, minutos, segundos;
 		String tiempo;
+		double calorias, peso;
 
+		datos = FuncionesPropias.CargarAtleta();
+		atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(datos.ruta);
+
+		peso = FuncionalidadAuxiliar.obtPesoAtleta(datos.ID);
+		Informe = obtEstadisticasBasicas(atletaTrackpoints);
 		segundosTotales = Informe.duracion;
 		horas = segundosTotales / 3600;
 		minutos = (segundosTotales % 3600) / 60;
 		segundos = segundosTotales % 60;
 
+		calorias = estimarConsumoCalorias(atletaTrackpoints, peso);
 		tiempo = String.format("%dh:%dm:%ds", horas,minutos,segundos);
-
+		System.out.println(calorias);
 		System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", Informe.fCMedia) + " p/m");
 		//Zonas de esfuerzo
+
+		ZonasFC zonas = FuncionesPropias.ZonasFrecuencia(atletaTrackpoints);
 		System.out.println("Zonas de frecuencia cardíaca:");
-		System.out.println("Z1 Resistencia: " + String.format("%.2f%" + "%", zonas.resistencia*100/pInfo.frecCardiaca.length));
-		System.out.println("Z2 Moderado: " + String.format("%.2f%" + "%", zonas.moderado*100/pInfo.frecCardiaca.length));
-		System.out.println("Z3 Ritmo: " + String.format("%.2f%" + "%", zonas.ritmo*100/pInfo.frecCardiaca.length));
-		System.out.println("Z4 Umbral: " + String.format("%.2f%" + "%", zonas.umbral*100/pInfo.frecCardiaca.length));
-		System.out.println("Z5 Anaeróbico: " + String.format("%.2f%" + "%", zonas.anaerobico*100/pInfo.frecCardiaca.length));
+		System.out.println("Z1 Resistencia: " + String.format("%.2f%" + "%", zonas.resistencia*100/atletaTrackpoints.frecCardiaca.length));
+		System.out.println("Z2 Moderado: " + String.format("%.2f%" + "%", zonas.moderado*100/atletaTrackpoints.frecCardiaca.length));
+		System.out.println("Z3 Ritmo: " + String.format("%.2f%" + "%", zonas.ritmo*100/atletaTrackpoints.frecCardiaca.length));
+		System.out.println("Z4 Umbral: " + String.format("%.2f%" + "%", zonas.umbral*100/atletaTrackpoints.frecCardiaca.length));
+		System.out.println("Z5 Anaeróbico: " + String.format("%.2f%" + "%", zonas.anaerobico*100/atletaTrackpoints.frecCardiaca.length));
 
 
 		System.out.println("Duracion de la actividad: " + tiempo);
 		System.out.println("Distancia total recorrida: " + String.format("%.2f", Informe.distancia) + " Km");
 		System.out.println("Velocidad media del atleta: " + String.format("%.2f", Informe.velocidad) + " Km/h");
 		//Generar la gráfica
-		graficarPerfil(pInfo, "Gráfica1");
-
+		graficarPerfil(atletaTrackpoints, "Gráfica1");
 
 	}
 
