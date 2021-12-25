@@ -1,0 +1,53 @@
+LEXICO
+   listaNumeros: Entero[]
+   numeroDatos: Entero
+   desviacion: Real
+   
+   leerDatosEntrada(dato pNumeroDatos: Entero)--> Entero[] : una funcion
+   PRE:{pNumeroDatos indica el número de elementos en la secuencia que se van a leer}
+   POST:{Devuelve una lista de números enteros representad mediante una tabla del tamaño de pNumeroDatos}
+   LEXICO
+   		listaNumeros: Entero[]
+   		i: Entero
+   ALGORITMO
+   		listaNumeros <-- Crear Entero[pNumeroDatos]
+   		PARA_CADA i ENTRE 0 Y NumeroElementos(listaNumeros) -1 INCR 1 HACER
+   		     Leer(listaNumeros[i])
+   		FIN_PARA_CADA
+   		Devolver listaNumeros
+   FIN
+
+   calcularMedia(dato-resultado pListaNumeros: Entero[])-->Real : una funcion
+   PRE:{pListaNumeros contiene  una lista de numeros}
+   POST:{Devuele la media aritmetica de los números en la lista pListaNumeros}
+   LEXICO
+   		suma: Entero
+   		media: Real
+   		i: Entero
+   ALGORITMO
+   		suma<--0
+   		PARA_CADA i ENTRE 0 Y NumeroElementos(listaNumeros) -1 INCR 1 HACER
+   		     suma <-- suma +listaNumeros[i]
+   		FIN_PARA_CADA
+   		media <-- ((Real) suma ) / NumeroElementos(listaNumeros)
+   		Devolver media
+   FIN
+   		
+   calcularDesviacionEstandar(dato-resultado pListaNumeros: Entero[])-->Real : una funcion
+   PRE:{pListaNumeros contiene  una lista de numeros}
+   POST:{Devuele la desviación standard de los números en la lista pListaNumeros}
+   LEXICO
+
+   ALGORITMO
+
+
+   FIN
+   
+
+
+ALGORITMO
+    Leer(numeroDatos)
+	listaNumeros <-- leerDatosEntrada(numeroDatos)
+	desviacion <-- calcularDesviacionEstandar(listanumeros)
+	Escribir(desviación)
+FIN

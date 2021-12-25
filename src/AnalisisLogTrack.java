@@ -59,7 +59,7 @@ public class AnalisisLogTrack {
 		}
 
 		FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, true);
-		FuncionalidadAuxiliar.eliminarPlots();
+		//FuncionalidadAuxiliar.eliminarPlots();
 	}
 
 
@@ -82,19 +82,14 @@ public class AnalisisLogTrack {
 	 * @return Las calorías consumidas en la actividad.
 	 */
 	public static double estimarConsumoCalorias(InfoLogTrack pInfo, double pKg) {
-		double Dtiempo, Dvelocidad, Ddistancia, caloriasTotales;
+		double Dtiempo, Dvelocidad, caloriasTotales, MET;
 		caloriasTotales = 0;
-		Ddistancia = 0;
-
 		for (int i = 1; i < pInfo.latitud.length; i++) {
-			Dtiempo = pInfo.tiempo[i]-pInfo.tiempo[i-1];
-			System.out.println(Dtiempo);
-			Dvelocidad = DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]) / Dtiempo;
-			double MET = -1.52+0.510*Dvelocidad;
-			caloriasTotales += Dtiempo * (3.5*MET*pKg) /200;
+			Dtiempo = (double) pInfo.tiempo[i]-pInfo.tiempo[i-1]; //diferencia de tiempos en segundos
+			Dvelocidad = DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]) / Dtiempo/3600; //KM/Horas
+			MET = -1.52+0.510*Dvelocidad; //MET en el instante i
+			caloriasTotales += (Dtiempo/60) * (3.5*MET*pKg) /200;
 		}
-		System.out.println(caloriasTotales);
-
 		return caloriasTotales;
 	}
 
@@ -162,7 +157,7 @@ public class AnalisisLogTrack {
 		System.out.println("Distancia total recorrida: " + String.format("%.2f", Informe.distancia) + " Km");
 		System.out.println("Velocidad media del atleta: " + String.format("%.2f", Informe.velocidad) + " Km/h");
 		//Generar la gráfica
-		graficarPerfil(atletaTrackpoints, "Gráfica1");
+		graficarPerfil(atletaTrackpoints,  String.format("GeneratedPlots\\%s\\plot-%s-0%d.png", datos.ID, datos.ID, datos.actividad));
 
 	}
 
