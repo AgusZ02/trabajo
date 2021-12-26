@@ -69,7 +69,31 @@ public class AnalisisLogTrack {
 	 * @return lista de enteros indicando en cada posicion la distribucion de la FR
 	 */
 	public static int[] obtDistribucionRC(InfoLogTrack pInfo) {
-		return null;
+		int resistencia, moderado, ritmo, umbral, anaerobico;
+		int[] zonas;
+
+		resistencia = moderado = ritmo = umbral = anaerobico = 0;
+		zonas = new int[5];
+
+		for (int i = 0; i < pInfo.frecCardiaca.length; i++) {
+			if (pInfo.frecCardiaca[i] < 123) {
+				resistencia += 1;
+			} else if (pInfo.frecCardiaca[i] < 153) {
+				moderado += 1;
+			} else if (pInfo.frecCardiaca[i] < 169) {
+				ritmo += 1;
+			} else if (pInfo.frecCardiaca[i] < 184) {
+				umbral += 1;
+			} else {
+				anaerobico += 1;
+			}
+		}
+		zonas[0] = resistencia;
+		zonas[1] = moderado;
+		zonas[2] = ritmo;
+		zonas[3] = umbral;
+		zonas[4] = anaerobico;
+		return zonas;
 	}
 
 	/**
@@ -125,7 +149,7 @@ public class AnalisisLogTrack {
 		int segundosTotales, horas, minutos, segundos;
 		String tiempo;
 		double calorias, peso;
-
+		int[] zonas;
 		String ruta;
 		for (int i = 1; i <= 7; i++) {
 			for (int j = 1; j <= 5; j++) {
@@ -144,7 +168,7 @@ public class AnalisisLogTrack {
 				System.out.println(String.format("Calorías totales quemadas: %.2f", calorias));
 				System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", Informe.fCMedia) + " p/m");
 				//Zonas de esfuerzo
-				ZonasFC zonas = FuncionesPropias.ZonasFrecuencia(atletaTrackpoints);
+				zonas = obtDistribucionRC(String.format("Athlete%d",i));
 				System.out.println("Zonas de frecuencia cardíaca:");
 				System.out.println("Z1 Resistencia: " + String.format("%.2f%" + "%", zonas.resistencia * 100 / atletaTrackpoints.frecCardiaca.length));
 				System.out.println("Z2 Moderado: " + String.format("%.2f%" + "%", zonas.moderado * 100 / atletaTrackpoints.frecCardiaca.length));
