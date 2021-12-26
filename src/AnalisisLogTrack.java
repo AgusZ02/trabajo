@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 public class AnalisisLogTrack {
 	public final static double RADIO_TIERRA_KM = 6371;
@@ -58,7 +57,7 @@ public class AnalisisLogTrack {
 			arrayFC[i] = pInfo.frecCardiaca[i];
 		}
 
-		FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, true);
+		FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, false);
 		//FuncionalidadAuxiliar.eliminarPlots();
 	}
 
@@ -86,14 +85,14 @@ public class AnalisisLogTrack {
 		caloriasTotales = 0;
 		for (int i = 1; i < pInfo.latitud.length; i++) {
 			Dtiempo = (double) pInfo.tiempo[i]-pInfo.tiempo[i-1]; //diferencia de tiempos en segundos
-			Dvelocidad = DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]) / Dtiempo/3600; //KM/Horas
+			Dvelocidad = DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]) / (Dtiempo/3600); //KM/Horas
 			MET = -1.52+0.510*Dvelocidad; //MET en el instante i
 			caloriasTotales += (Dtiempo/60) * (3.5*MET*pKg) /200;
 		}
 		return caloriasTotales;
 	}
 
-	/**
+	 /**
 	 * Obtiene las estadísticas avanzadas de la actividad realizada
 	 *
 	 * @param pInfo informacion de la actividad del atleta
@@ -110,7 +109,7 @@ public class AnalisisLogTrack {
 
 		for (int i = 1; i < pInfo.tiempo.length; i += 1) {
 
-			arrayDistancia[i] += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]); ;
+			arrayDistancia[i] += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
 		}
 
 		return Avanzadas;
@@ -122,42 +121,48 @@ public class AnalisisLogTrack {
 	public static void generarInformesTrack() {
 		//Inicializar variables
 		InfoLogTrack atletaTrackpoints;
-		DatosIniciales datos;
 		EstadisticasBasicas Informe;
 		int segundosTotales, horas, minutos, segundos;
 		String tiempo;
 		double calorias, peso;
 
-		datos = FuncionesPropias.CargarAtleta();
-		atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(datos.ruta);
+		String ruta;
+		for (int i = 1; i <= 7; i++) {
+			for (int j = 1; j <= 5; j++) {
+				ruta = String.format("TrackFiles\\Athlete%d\\activity-Athlete%d-0%d.csv", i, i, j);
+				atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
+				peso = FuncionalidadAuxiliar.obtPesoAtleta(String.format("Athlete%d",i));
+				Informe = obtEstadisticasBasicas(atletaTrackpoints);
+				segundosTotales = Informe.duracion;
 
-		peso = FuncionalidadAuxiliar.obtPesoAtleta(datos.ID);
-		Informe = obtEstadisticasBasicas(atletaTrackpoints);
-		segundosTotales = Informe.duracion;
-		horas = segundosTotales / 3600;
-		minutos = (segundosTotales % 3600) / 60;
-		segundos = segundosTotales % 60;
+				horas = segundosTotales / 3600;
+				minutos = (segundosTotales % 3600) / 60;
+				segundos = segundosTotales % 60;
+				calorias = estimarConsumoCalorias(atletaTrackpoints, peso);
+				tiempo = String.format("%dh:%dm:%ds", horas, minutos, segundos);
+				System.out.printf("Log: %s \n", ruta);
+				System.out.println(String.format("Calorías totales quemadas: %.2f", calorias));
+				System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", Informe.fCMedia) + " p/m");
+				//Zonas de esfuerzo
+				ZonasFC zonas = FuncionesPropias.ZonasFrecuencia(atletaTrackpoints);
+				System.out.println("Zonas de frecuencia cardíaca:");
+				System.out.println("Z1 Resistencia: " + String.format("%.2f%" + "%", zonas.resistencia * 100 / atletaTrackpoints.frecCardiaca.length));
+				System.out.println("Z2 Moderado: " + String.format("%.2f%" + "%", zonas.moderado * 100 / atletaTrackpoints.frecCardiaca.length));
 
-		calorias = estimarConsumoCalorias(atletaTrackpoints, peso);
-		tiempo = String.format("%dh:%dm:%ds", horas,minutos,segundos);
-		System.out.println("Calorías totales: " + calorias);
-		System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", Informe.fCMedia) + " p/m");
-		//Zonas de esfuerzo
+				System.out.println("Z3 Ritmo: " + String.format("%.2f%" + "%", zonas.ritmo * 100 / atletaTrackpoints.frecCardiaca.length));
 
-		ZonasFC zonas = FuncionesPropias.ZonasFrecuencia(atletaTrackpoints);
-		System.out.println("Zonas de frecuencia cardíaca:");
-		System.out.println("Z1 Resistencia: " + String.format("%.2f%" + "%", zonas.resistencia*100/atletaTrackpoints.frecCardiaca.length));
-		System.out.println("Z2 Moderado: " + String.format("%.2f%" + "%", zonas.moderado*100/atletaTrackpoints.frecCardiaca.length));
-		System.out.println("Z3 Ritmo: " + String.format("%.2f%" + "%", zonas.ritmo*100/atletaTrackpoints.frecCardiaca.length));
-		System.out.println("Z4 Umbral: " + String.format("%.2f%" + "%", zonas.umbral*100/atletaTrackpoints.frecCardiaca.length));
-		System.out.println("Z5 Anaeróbico: " + String.format("%.2f%" + "%", zonas.anaerobico*100/atletaTrackpoints.frecCardiaca.length));
+				System.out.println("Z4 Umbral: " + String.format("%.2f%" + "%", zonas.umbral * 100 / atletaTrackpoints.frecCardiaca.length));
+				System.out.println("Z5 Anaeróbico: " + String.format("%.2f%" + "%", zonas.anaerobico * 100 / atletaTrackpoints.frecCardiaca.length));
+				System.out.println("Duracion de la actividad: " + tiempo);
+				System.out.println("Distancia total recorrida: " + String.format("%.2f", Informe.distancia) + " Km");
+				System.out.println("Velocidad media del atleta: " + String.format("%.2f", Informe.velocidad) + " Km/h");
+				System.out.println("\n");
+				//Generar la gráfica
+				graficarPerfil(atletaTrackpoints, String.format("GeneratedPlots\\%s\\plot-%s-0%d.png", String.format("Athlete%d",i), String.format("Athlete%d",i), j));
+			}
+		}
 
 
-		System.out.println("Duracion de la actividad: " + tiempo);
-		System.out.println("Distancia total recorrida: " + String.format("%.2f", Informe.distancia) + " Km");
-		System.out.println("Velocidad media del atleta: " + String.format("%.2f", Informe.velocidad) + " Km/h");
-		//Generar la gráfica
-		graficarPerfil(atletaTrackpoints,  String.format("GeneratedPlots\\%s\\plot-%s-0%d.png", datos.ID, datos.ID, datos.actividad));
 
 	}
 

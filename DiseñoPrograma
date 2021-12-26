@@ -68,7 +68,8 @@ LEXICO
 
         arrayFC <-- crear real[NumElementos(pInfo.frecCardiaca)]
 
-        PARA_CADA i ENTRE 0 Y NumElementos( )
+        PARA_CADA i ENTRE 0 Y NumElementos(arrayFC) INCR 1 HACER
+            arrayFC[i] <-- pInfo.frecCardiaca[i]
    FIN
 
 ALGORITMO
