@@ -126,16 +126,16 @@ public class AnalisisLogTrack {
 	 */
 	public static EstadisticasAvanzadas obtEstadisticasAvanzadas(InfoLogTrack pInfo, double pKg) {
 		EstadisticasAvanzadas Avanzadas;
-		double[] arrayDistancia;
+		EstadisticasBasicas Basicas;
+		Basicas = obtEstadisticasBasicas(pInfo);
+		double km, valor, tiempoKm;
+		km = tiempoKm = valor = 0;
 
 		Avanzadas = new EstadisticasAvanzadas();
-		arrayDistancia = new double[pInfo.tiempo.length];
-
-		for (int i = 1; i < pInfo.tiempo.length; i += 1) {
-
-			arrayDistancia[i] += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
-		}
-
+		Avanzadas.velocidadMaxima = valor;
+		Avanzadas.desnivel = 0;
+		Avanzadas.velocidadMaxKm = valor;
+		Avanzadas.calorias = estimarConsumoCalorias(pInfo, pKg);
 		return Avanzadas;
 	}
 
@@ -148,7 +148,7 @@ public class AnalisisLogTrack {
 		EstadisticasBasicas Informe;
 		int segundosTotales, horas, minutos, segundos;
 		String tiempo;
-		double calorias, peso;
+		double peso, resistencia, moderado, ritmo, umbral, anaerobico;
 		int[] zonas;
 		String ruta;
 		for (int i = 1; i <= 7; i++) {
@@ -157,29 +157,44 @@ public class AnalisisLogTrack {
 				atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
 				peso = FuncionalidadAuxiliar.obtPesoAtleta(String.format("Athlete%d",i));
 				Informe = obtEstadisticasBasicas(atletaTrackpoints);
-				segundosTotales = Informe.duracion;
+				EstadisticasAvanzadas Avanzadas;
+				Avanzadas = obtEstadisticasAvanzadas(atletaTrackpoints, peso);
 
+				System.out.printf("Log: %s \n", ruta);
+
+
+
+				//Tiempo de la actividad
+				segundosTotales = Informe.duracion;
 				horas = segundosTotales / 3600;
 				minutos = (segundosTotales % 3600) / 60;
 				segundos = segundosTotales % 60;
-				calorias = estimarConsumoCalorias(atletaTrackpoints, peso);
 				tiempo = String.format("%dh:%dm:%ds", horas, minutos, segundos);
-				System.out.printf("Log: %s \n", ruta);
-				System.out.println(String.format("Calorías totales quemadas: %.2f", calorias));
-				System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", Informe.fCMedia) + " p/m");
-				//Zonas de esfuerzo
-				zonas = obtDistribucionRC(String.format("Athlete%d",i));
-				System.out.println("Zonas de frecuencia cardíaca:");
-				System.out.println("Z1 Resistencia: " + String.format("%.2f%" + "%", zonas.resistencia * 100 / atletaTrackpoints.frecCardiaca.length));
-				System.out.println("Z2 Moderado: " + String.format("%.2f%" + "%", zonas.moderado * 100 / atletaTrackpoints.frecCardiaca.length));
-
-				System.out.println("Z3 Ritmo: " + String.format("%.2f%" + "%", zonas.ritmo * 100 / atletaTrackpoints.frecCardiaca.length));
-
-				System.out.println("Z4 Umbral: " + String.format("%.2f%" + "%", zonas.umbral * 100 / atletaTrackpoints.frecCardiaca.length));
-				System.out.println("Z5 Anaeróbico: " + String.format("%.2f%" + "%", zonas.anaerobico * 100 / atletaTrackpoints.frecCardiaca.length));
 				System.out.println("Duracion de la actividad: " + tiempo);
 				System.out.println("Distancia total recorrida: " + String.format("%.2f", Informe.distancia) + " Km");
 				System.out.println("Velocidad media del atleta: " + String.format("%.2f", Informe.velocidad) + " Km/h");
+				System.out.println(String.format("Calorías totales quemadas: %.2f", Avanzadas.calorias));
+				System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", Informe.fCMedia) + " p/m");
+
+
+				//Zonas de esfuerzo
+				System.out.println("Distribución de zonas FC:");
+				zonas = obtDistribucionRC(atletaTrackpoints);
+				//Porcentaje de zonas de esfuerzo
+				resistencia = ((double)(zonas[0] * 100) / atletaTrackpoints.frecCardiaca.length);
+				moderado = ((double)(zonas[1] * 100) / atletaTrackpoints.frecCardiaca.length);
+				ritmo = ((double)(zonas[2] * 100) / atletaTrackpoints.frecCardiaca.length);
+				umbral = ((double)(zonas[3] * 100) / atletaTrackpoints.frecCardiaca.length);
+				anaerobico = ((double)(zonas[4] * 100) / atletaTrackpoints.frecCardiaca.length);
+
+				System.out.println("Z1 Resistencia: " + String.format("%.2f",resistencia));
+				System.out.println("Z2 Moderado: " + String.format("%.2f", moderado));
+				System.out.println("Z3 Ritmo: " + String.format("%.2f", ritmo));
+				System.out.println("Z4 Umbral: " + String.format("%.2f", umbral));
+				System.out.println("Z5 Anaeróbico: " + String.format("%.2f", anaerobico));
+
+				System.out.println("KM más rápido: " + Avanzadas.velocidadMaxKm);
+
 				System.out.println("\n");
 				//Generar la gráfica
 				graficarPerfil(atletaTrackpoints, String.format("GeneratedPlots\\%s\\plot-%s-0%d.png", String.format("Athlete%d",i), String.format("Athlete%d",i), j));
