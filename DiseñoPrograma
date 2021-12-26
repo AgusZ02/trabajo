@@ -1,49 +1,75 @@
 LEXICO
-   listaNumeros: Entero[]
-   numeroDatos: Entero
-   desviacion: Real
-   
-   leerDatosEntrada(dato pNumeroDatos: Entero)--> Entero[] : una funcion
-   PRE:{pNumeroDatos indica el número de elementos en la secuencia que se van a leer}
-   POST:{Devuelve una lista de números enteros representad mediante una tabla del tamaño de pNumeroDatos}
+   RadioTierra: real
+   RadioTierra<-- 6371
+   obtEstadisticasBasicas(dato pInfo: InfoLogTrack)--> EstadisticasBasicas : una funcion
+   PRE:{pInfo contiene los datos del track}
+   POST:{Devuelve una estructura EstadisticasBasicas con los datos de las estadisticas cargados.}
    LEXICO
-   		listaNumeros: Entero[]
-   		i: Entero
+   		estBasicas: EstadisticasBasicas
+   		distancia: real
    ALGORITMO
-   		listaNumeros <-- Crear Entero[pNumeroDatos]
-   		PARA_CADA i ENTRE 0 Y NumeroElementos(listaNumeros) -1 INCR 1 HACER
-   		     Leer(listaNumeros[i])
+   		estBasicas <-- Crear EstadisticasBasicas
+   		PARA_CADA i ENTRE 1 Y NumeroElementos(pInfo.latitud) INCR 1 HACER
+   		     sumar a distancia <-- DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i])
    		FIN_PARA_CADA
-   		Devolver listaNumeros
+   		estBasicas.distancia <- distancia
+   		estBasicas.fCMedia = CalculoMedia(pInfo.frecCardiaca)
+   		estBasicas.pInfo.tiempo(NumeroElementos(pInfo.tiempo)-1)
+   		estBasicas.velocidad = (estBasicas.distancia / estBasicas.duracion / 3600)
+        devolver estBasicas
    FIN
 
-   calcularMedia(dato-resultado pListaNumeros: Entero[])-->Real : una funcion
-   PRE:{pListaNumeros contiene  una lista de numeros}
-   POST:{Devuele la media aritmetica de los números en la lista pListaNumeros}
+   DistanciaEntrePuntos(lat1: real, lat2: real, lon1: real, lon2: real)-->Real : una funcion
+   PRE:{lat1-2 y lon1-2 son coordenadas de longitud y latitud}
+   POST:{Devuele la distancia en kilómetros entre las dos coordenadas}
    LEXICO
-   		suma: Entero
-   		media: Real
-   		i: Entero
+   		Dlat: real
+   		Dlon: real
+   		a: real
+   		d: real
    ALGORITMO
-   		suma<--0
-   		PARA_CADA i ENTRE 0 Y NumeroElementos(listaNumeros) -1 INCR 1 HACER
-   		     suma <-- suma +listaNumeros[i]
-   		FIN_PARA_CADA
-   		media <-- ((Real) suma ) / NumeroElementos(listaNumeros)
-   		Devolver media
+   		Dlat<--Radianes(ValorAbsoluto(lat2-lat1))
+   		Dlon<--Radianes(ValorAbsoluto(lon2-lon1))
+   		a<-- Sin(Dlat/2)^2 + Cos(Radianes(lat1)) * cos(Radianes(lat2)) * Sin(Dlong/2)^2
+   		d<-- 2*RadioTierra*atan2(a^0.5,(1-a)^0.5)
+   		devolver d
+
    FIN
    		
-   calcularDesviacionEstandar(dato-resultado pListaNumeros: Entero[])-->Real : una funcion
-   PRE:{pListaNumeros contiene  una lista de numeros}
-   POST:{Devuele la desviación standard de los números en la lista pListaNumeros}
+   CalculoMedia(array: entero[])-->Real : una funcion
+   PRE:{array contiene  una lista de numeros}
+   POST:{Devuele la media aritmética de los numeros que componen array}
    LEXICO
-
+    sumatorio: real
+    media: real
    ALGORITMO
-
-
+        sumatorio <-- 0
+        PARA_CADA i ENTRE 0 Y NumeroElementos(array)INCR 1 HACER
+            sumatorio <- sumatorio + array[i]
+        FIN_PARA_CADA
+        media <-- sumatorio/NumeroElementos(array)
+        devolver media
    FIN
-   
 
+   graficarPerfil(pInfo: InfoLogTrack, pFichero: String) --> Sin retorno: una funcion
+   PRE{pInfo contiene los datos del track y pFichero es una cadena de texto con el path del fichero donde se guardará el gráfico}
+   POST{Ejecuta un código que muestra una gráfica y la guarda en pFichero}
+   LEXICO
+    sumatorio: real
+    arrayFC: real[]
+    arrayDistancias: real[]
+   ALGORITMO
+        arrayDistancias <-- crear real[NumElementos(pInfo.tiempo)]
+        sumatorio <-- 0
+        PARA_CADA i ENTRE 1 Y NumElementos(arrayDistancias) INCR 1 HACER
+            sumatorio <-- sumatorio + DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i])
+            arrayDistancias[i] <-- sumatorio
+        FIN_PARA_CADA
+
+        arrayFC <-- crear real[NumElementos(pInfo.frecCardiaca)]
+
+        PARA_CADA i ENTRE 0 Y NumElementos( )
+   FIN
 
 ALGORITMO
     Leer(numeroDatos)
