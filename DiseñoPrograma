@@ -1,6 +1,8 @@
 LEXICO
    RadioTierra: real
    RadioTierra<-- 6371
+
+
    obtEstadisticasBasicas(dato pInfo: InfoLogTrack)--> EstadisticasBasicas : una funcion
    PRE:{pInfo contiene los datos del track}
    POST:{Devuelve una estructura EstadisticasBasicas con los datos de las estadisticas cargados.}
@@ -19,6 +21,7 @@ LEXICO
         devolver estBasicas
    FIN
 
+
    DistanciaEntrePuntos(lat1: real, lat2: real, lon1: real, lon2: real)-->Real : una funcion
    PRE:{lat1-2 y lon1-2 son coordenadas de longitud y latitud}
    POST:{Devuele la distancia en kilómetros entre las dos coordenadas}
@@ -36,7 +39,8 @@ LEXICO
 
    FIN
    		
-   CalculoMedia(array: entero[])-->Real : una funcion
+
+   CalculoMedia(array: entero[])--> Real : una funcion
    PRE:{array contiene  una lista de numeros}
    POST:{Devuele la media aritmética de los numeros que componen array}
    LEXICO
@@ -50,6 +54,7 @@ LEXICO
         media <-- sumatorio/NumeroElementos(array)
         devolver media
    FIN
+
 
    graficarPerfil(pInfo: InfoLogTrack, pFichero: String) --> Sin retorno: una funcion
    PRE{pInfo contiene los datos del track y pFichero es una cadena de texto con el path del fichero donde se guardará el gráfico}
@@ -74,6 +79,7 @@ LEXICO
         generarTrackPot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, false)
    FIN
 
+
    obtDistribucionRC)pInfo: InfoLogTrack) --> entero[]: una funcion
    PRE{pInfo contiene los datos del track}
    POST{Devuelve una tabla con los contadores de cada zona de trabajo}
@@ -85,7 +91,7 @@ LEXICO
     anaerobico: entero
     zonas: entero[]
    ALGORITMO
-        resistencia = moderado = ritmo = umbral = anaerobico <- 0
+        resistencia = moderado = ritmo = umbral = anaerobico --> 0
         zonas <- crear entero[5]
         PARA_CADA i ENTRE 0 y NumElementos(pInfo.frecCardiaca) INCR 1 HACER
             SI (pInfo.frecCardiaca[i] < 123) HACER
@@ -107,7 +113,9 @@ LEXICO
         zonas[4] <- anaerobico
         devolver zonas
    FIN
-   estimarConsumoCalorias(pInfo: InfoLogTrack, pKg: real) <- real: una funcion
+
+
+   estimarConsumoCalorias(pInfo: InfoLogTrack, pKg: real) --> real: una funcion
    LEXICO
     Dtiempo: real
     Dvelocidad: real
@@ -124,7 +132,21 @@ LEXICO
         devolver caloriasTotales
    FIN
 
-   generarInformesTrack(sin args) <- sin retorno: una funcion
+
+   CalculoMedia(array: int[]) --> real: una funcion
+   LEXICO
+    sumatorio: real
+    media: real
+   ALGORITMO
+        sumatorio <- 0
+        PARA_CADA i entre NumElementos(array) INCR 1 HACER
+            sumatorio <- sumatorio + i
+        FIN_PARA_CADA
+        media <- sumatorio/NumElementos(array)
+        devolver media
+   FIN
+
+   generarInformesTrack(sin args) --> sin retorno: una funcion
    LEXICO
     atletaTrackpoints: InfoLogTrack
     InformeBasicas: EstadisticasBasicas
@@ -180,7 +202,9 @@ LEXICO
             FIN_PARA_CADA
         FIN_PARA_CADA
     FIN
-    DistanciaEntrePuntos(lat1: real, lat2: real, lon1: real, lon2: real) <- real: una funcion
+
+
+    DistanciaEntrePuntos(lat1: real, lat2: real, lon1: real, lon2: real) --> real: una funcion
     PRE{lat1, lat2, lon1 y lon2 son coordenadas geograficas}
     POST{devuelve la distancia entre las coordenadas en kilometros}
     LEXICO

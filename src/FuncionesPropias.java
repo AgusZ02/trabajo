@@ -19,12 +19,12 @@ public class FuncionesPropias {
         }
         return zonas;
     }
+    //Funcion que devuelve la media aritmetica con los elementos de una tabla int
     public static double CalculoMedia(int[] array){
-        double sumatorio;
-        double media;
+        double sumatorio, media;
         sumatorio = 0;
-        for (int j : array) {
-            sumatorio += j;
+        for (int i : array) {
+            sumatorio += i;
 
         }
         media = sumatorio/array.length;

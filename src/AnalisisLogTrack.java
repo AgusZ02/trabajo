@@ -9,9 +9,10 @@ public class AnalisisLogTrack {
 	 * @return las estadísticas basicas de duracion, velocidad media y distancia total de la actividad
 	 */
 	public static EstadisticasBasicas obtEstadisticasBasicas(InfoLogTrack pInfo) {
+		//Declarar variables
 		EstadisticasBasicas EstBasicas;
 		double distancia;
-
+		//Inicializar variables
 		EstBasicas = new EstadisticasBasicas();
 		distancia = 0;
 
@@ -19,7 +20,7 @@ public class AnalisisLogTrack {
 		for (int i = 1; i < pInfo.latitud.length; i++) {
 			distancia += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
 		}
-
+		//Asigna los valores conseguidos
 		EstBasicas.distancia = distancia;
 		EstBasicas.fCMedia = FuncionesPropias.CalculoMedia(pInfo.frecCardiaca);
 		EstBasicas.duracion = pInfo.tiempo[pInfo.tiempo.length -1];
@@ -37,6 +38,7 @@ public class AnalisisLogTrack {
 	 * @param pFichero Nombre (path) del fichero donde se guardará el gráfico generado
 	 */
 	public static void graficarPerfil(InfoLogTrack pInfo, String pFichero) {
+		//Declarar variables
 		double sumatorio;
 		double[] arrayFC;
 		double[] arrayDistancias;
@@ -45,6 +47,8 @@ public class AnalisisLogTrack {
 
 		arrayDistancias = new double[pInfo.tiempo.length];
 		sumatorio = 0;
+
+		//Crea la tabla con distancias acumuladas
 		for (int i = 1; i < arrayDistancias.length; i++) {
 			sumatorio += DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]);
 			arrayDistancias[i] = sumatorio;
@@ -69,12 +73,13 @@ public class AnalisisLogTrack {
 	 * @return lista de enteros indicando en cada posicion la distribucion de la FR
 	 */
 	public static int[] obtDistribucionRC(InfoLogTrack pInfo) {
+		//Declarar variables
 		int resistencia, moderado, ritmo, umbral, anaerobico;
 		int[] zonas;
-
+		//Inicializar variables
 		resistencia = moderado = ritmo = umbral = anaerobico = 0;
 		zonas = new int[5];
-
+		//Analizar cada elemento de la tabla y aumentar su contador correspondiente
 		for (int i = 0; i < pInfo.frecCardiaca.length; i++) {
 			if (pInfo.frecCardiaca[i] < 123) {
 				resistencia += 1;
@@ -88,6 +93,7 @@ public class AnalisisLogTrack {
 				anaerobico += 1;
 			}
 		}
+		//Guardar los contadores en los espacios de la tabla
 		zonas[0] = resistencia;
 		zonas[1] = moderado;
 		zonas[2] = ritmo;
@@ -105,6 +111,7 @@ public class AnalisisLogTrack {
 	 * @return Las calorías consumidas en la actividad.
 	 */
 	public static double estimarConsumoCalorias(InfoLogTrack pInfo, double pKg) {
+		//Declarar variables
 		double Dtiempo, Dvelocidad, caloriasTotales, MET;
 		caloriasTotales = 0;
 		for (int i = 1; i < pInfo.latitud.length; i++) {
@@ -125,8 +132,10 @@ public class AnalisisLogTrack {
 	 * km más rápido, consumo calórico y desnivel positivo
 	 */
 	public static EstadisticasAvanzadas obtEstadisticasAvanzadas(InfoLogTrack pInfo, double pKg) {
+		//Declarar variables
 		EstadisticasAvanzadas Avanzadas;
 		EstadisticasBasicas Basicas;
+		//Asignar variables
 		Basicas = obtEstadisticasBasicas(pInfo);
 		double km, valor, tiempoKm;
 		km = tiempoKm = valor = 0;
@@ -143,7 +152,7 @@ public class AnalisisLogTrack {
 	 * Genera el informe completo de las actividades
 	 */
 	public static void generarInformesTrack() {
-		//Inicializar variables
+		//Declarar variables
 		InfoLogTrack atletaTrackpoints;
 		EstadisticasBasicas InformeBasicas;
 		EstadisticasAvanzadas InformeAvanzadas;
@@ -152,6 +161,7 @@ public class AnalisisLogTrack {
 		double peso, resistencia, moderado, ritmo, umbral, anaerobico;
 		int[] zonas;
 		String ruta;
+
 		for (int i = 1; i <= 7; i++) {
 			for (int j = 1; j <= 5; j++) {
 				ruta = String.format("TrackFiles\\Athlete%d\\activity-Athlete%d-0%d.csv", i, i, j);
@@ -172,6 +182,7 @@ public class AnalisisLogTrack {
 				segundos = segundosTotales % 60;
 				tiempo = String.format("%dh:%dm:%ds", horas, minutos, segundos);
 				System.out.println("Duracion de la actividad: " + tiempo);
+
 				System.out.println("Distancia total recorrida: " + String.format("%.2f", InformeBasicas.distancia) + " Km");
 				System.out.println("Velocidad media del atleta: " + String.format("%.2f", InformeBasicas.velocidad) + " Km/h");
 				System.out.println(String.format("Calorías totales quemadas: %.2f", InformeAvanzadas.calorias));
@@ -208,8 +219,8 @@ public class AnalisisLogTrack {
 	public static double DistanciaEntrePuntos(double lat1, double lat2, double lon1, double lon2){
 		double Dlat, Dlong, a, d;
 
-		Dlat = Math.abs(lat2 - lat1);
-		Dlong = Math.abs(lon2 - lon1);
+		Dlat = Math.abs(lat2 - lat1); //Diferencia de latitudes
+		Dlong = Math.abs(lon2 - lon1); //Diferencia de longitudes
 		Dlat = Math.toRadians(Dlat);
 		Dlong = Math.toRadians(Dlong);
 		a = (Math.pow(Math.sin(Dlat)/2, 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.pow(Math.sin(Dlong/2),2));
