@@ -145,7 +145,8 @@ public class AnalisisLogTrack {
 	public static void generarInformesTrack() {
 		//Inicializar variables
 		InfoLogTrack atletaTrackpoints;
-		EstadisticasBasicas Informe;
+		EstadisticasBasicas InformeBasicas;
+		EstadisticasAvanzadas InformeAvanzadas;
 		int segundosTotales, horas, minutos, segundos;
 		String tiempo;
 		double peso, resistencia, moderado, ritmo, umbral, anaerobico;
@@ -156,25 +157,25 @@ public class AnalisisLogTrack {
 				ruta = String.format("TrackFiles\\Athlete%d\\activity-Athlete%d-0%d.csv", i, i, j);
 				atletaTrackpoints = FuncionalidadAuxiliar.cargarInfoCSV(ruta);
 				peso = FuncionalidadAuxiliar.obtPesoAtleta(String.format("Athlete%d",i));
-				Informe = obtEstadisticasBasicas(atletaTrackpoints);
-				EstadisticasAvanzadas Avanzadas;
-				Avanzadas = obtEstadisticasAvanzadas(atletaTrackpoints, peso);
+				InformeBasicas = obtEstadisticasBasicas(atletaTrackpoints);
+
+				InformeAvanzadas = obtEstadisticasAvanzadas(atletaTrackpoints, peso);
 
 				System.out.printf("Log: %s \n", ruta);
 
 
 
 				//Tiempo de la actividad
-				segundosTotales = Informe.duracion;
+				segundosTotales = InformeBasicas.duracion;
 				horas = segundosTotales / 3600;
 				minutos = (segundosTotales % 3600) / 60;
 				segundos = segundosTotales % 60;
 				tiempo = String.format("%dh:%dm:%ds", horas, minutos, segundos);
 				System.out.println("Duracion de la actividad: " + tiempo);
-				System.out.println("Distancia total recorrida: " + String.format("%.2f", Informe.distancia) + " Km");
-				System.out.println("Velocidad media del atleta: " + String.format("%.2f", Informe.velocidad) + " Km/h");
-				System.out.println(String.format("Calorías totales quemadas: %.2f", Avanzadas.calorias));
-				System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", Informe.fCMedia) + " p/m");
+				System.out.println("Distancia total recorrida: " + String.format("%.2f", InformeBasicas.distancia) + " Km");
+				System.out.println("Velocidad media del atleta: " + String.format("%.2f", InformeBasicas.velocidad) + " Km/h");
+				System.out.println(String.format("Calorías totales quemadas: %.2f", InformeAvanzadas.calorias));
+				System.out.println("Frecuendia cardíaca media: " + String.format("%.2f", InformeBasicas.fCMedia) + " p/m");
 
 
 				//Zonas de esfuerzo
@@ -192,8 +193,6 @@ public class AnalisisLogTrack {
 				System.out.println("Z3 Ritmo: " + String.format("%.2f", ritmo));
 				System.out.println("Z4 Umbral: " + String.format("%.2f", umbral));
 				System.out.println("Z5 Anaeróbico: " + String.format("%.2f", anaerobico));
-
-				System.out.println("KM más rápido: " + Avanzadas.velocidadMaxKm);
 
 				System.out.println("\n");
 				//Generar la gráfica

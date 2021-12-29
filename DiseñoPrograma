@@ -70,11 +70,138 @@ LEXICO
 
         PARA_CADA i ENTRE 0 Y NumElementos(arrayFC) INCR 1 HACER
             arrayFC[i] <-- pInfo.frecCardiaca[i]
+
+        generarTrackPot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, false)
    FIN
 
+   obtDistribucionRC)pInfo: InfoLogTrack) --> entero[]: una funcion
+   PRE{pInfo contiene los datos del track}
+   POST{Devuelve una tabla con los contadores de cada zona de trabajo}
+   LEXICO
+    resistencia: entero
+    moderado: entero
+    ritmo: entero
+    umbral: entero
+    anaerobico: entero
+    zonas: entero[]
+   ALGORITMO
+        resistencia = moderado = ritmo = umbral = anaerobico <- 0
+        zonas <- crear entero[5]
+        PARA_CADA i ENTRE 0 y NumElementos(pInfo.frecCardiaca) INCR 1 HACER
+            SI (pInfo.frecCardiaca[i] < 123) HACER
+                resistencia <- resistencia +1
+            SI_NO_SI (pInfo.frecCardiaca[i] < 153) HACER
+                moderado <- moderado +1
+            SI_NO_SI (pInfo.frecCardiaca[i] < 169 HACER
+                ritmo <- ritmo +1
+            SI_NO_SI (pInfo.frecCardiaca[i] < 184 HACER
+                umbral <- umbral +1
+            SI_NO HACER
+                anaerobico <- anaerobico +1
+        FIN_PARA_CADA
+
+        zonas[0] <- resistencia
+        zonas[1] <- moderado
+        zonas[2] <- ritmo
+        zonas[3] <- umbral
+        zonas[4] <- anaerobico
+        devolver zonas
+   FIN
+   estimarConsumoCalorias(pInfo: InfoLogTrack, pKg: real) <- real: una funcion
+   LEXICO
+    Dtiempo: real
+    Dvelocidad: real
+    caloriasTotales: real
+    MET: real
+   ALGORITMO
+        caloriasTotales <- 0
+        PARA_CADA i ENTRE 1 Y NumElementos(pInfo.latitud) INCR 1 HACER
+            Dtiempo <- (operacion real) pInfo.tiempo[i] - pInfo.tiempo[i-1]
+            Dvelocidad <- DistanciaEntrePuntos(pInfo.latitud[i-1], pInfo.latitud[i], pInfo.longitud[i-1], pInfo.longitud[i]) / (Dtiempo/3600)
+            MET <- -1.52+0.510 * Dvelocidad
+            caloriasTotales <- caloriasTotales + ((Dtiempo/60) * (3.5*MET*pKg) / 200)
+        FIN_PARA_CADA
+        devolver caloriasTotales
+   FIN
+
+   generarInformesTrack(sin args) <- sin retorno: una funcion
+   LEXICO
+    atletaTrackpoints: InfoLogTrack
+    InformeBasicas: EstadisticasBasicas
+    InformeAvanzadas: EstadisticasAvanzadas
+    segundosTotales: entero
+    horas: entero
+    minutos: entero
+    segundos: entero
+    tiempo: cadena de texto
+    peso: real
+    resistencia: real
+    moderado: real
+    ritmo: real
+    umbral: real
+    anaerobico: real
+    int[] zonas
+    ruta: cadena de texto
+
+    ALGORITMO
+        PARA_CADA i ENTRE 1 Y 7 incluido INCR 1 HACER
+            PARA_CADA j ENTRE 1 Y 5 INCLUIDO INCR 1 HACER
+                ruta <- ("TrackFiles\\Athlete%d\\activity-Athlete%d-0%d.csv", i, i, j)
+                atletaTrackpoints <- cargarInfoCSV(ruta)
+                peso <- obtPesoAtleta("Athlete%d",i)
+                InformeBasicas <- obtEstadisticasBasicas(atletaTrackpoints)
+                InformeAvanzadas <- obtEstadisticasAvanzadas(atletaTrackpoints, peso)
+                mostrar(log: ruta)
+                segundosTotales <- InformeBasicas.duracion
+                horas <- segundosTotales / 3600
+                minutos <- (segundostotales%3600) / 60
+                segundos <- segundosTotales % 60
+                tiempo <- "horas:minutos:segundos"
+                mostrar("duracion de la actividad: tiempo")
+                mostrar("Distancia total recorrida: InformeBasicas.distancia")
+                mostrar("Velocidad media del atleta: InformeBasicas.velocidad")
+                mostrar("Calorias totales quemadas: InformeAvanzadas.calorias")
+                mostrar("Frecuencia cardiaca media: InformeBasicas.fCMedia")
+
+                mostrar("Distribucion de zonas FC")
+                zonas <- obtDistribucionRC(atletaTrackpoints)
+                resistencia <- zonas[0] * 100) / atletaTrackpoints.frecCardiaca.length
+                moderado <- zonas[1] * 100) / atletaTrackpoints.frecCardiaca.length
+                ritmo <- zonas[2] * 100) / atletaTrackpoints.frecCardiaca.length
+                umbral <- zonas[3] * 100) / atletaTrackpoints.frecCardiaca.length
+                anaerobico <- zonas[4] * 100) / atletaTrackpoints.frecCardiaca.length
+
+                mostrar("Z1 Resistencia: resistencia")
+                mostrar("Z1 Resistencia: resistencia")
+                mostrar("Z1 Resistencia: resistencia")
+                mostrar("Z1 Resistencia: resistencia")
+                mostrar("Z1 Resistencia: resistencia")
+                graficarPerfil(atletaTrackpoints, ("GeneratedPlots\\%s\\plot-%s-0%d.png", atleta i, atleta i, j)
+            FIN_PARA_CADA
+        FIN_PARA_CADA
+    FIN
+    DistanciaEntrePuntos(lat1: real, lat2: real, lon1: real, lon2: real) <- real: una funcion
+    PRE{lat1, lat2, lon1 y lon2 son coordenadas geograficas}
+    POST{devuelve la distancia entre las coordenadas en kilometros}
+    LEXICO
+        Dlat: real
+        Dlong: real
+        a: real
+        d: real
+
+    ALGORITMO
+        Dlat <- ValorAbsoluto(lat2-lat1)
+        Dlong <- ValorAbsoluto(lon2-lon1)
+        Dlat <- Radianes(Dlat)
+        Dlong <- Radianes(Dlong)
+        a <- Sin^2(Dlat/2) + cos(Radianes(lat1)) * cos(Radianes(lat2)) * sin^2(Dlong/2)
+        d <- 2 * RadioTierra * atan2(a^0.5, (1-a)^0.5)
+        devolver d
+    FIN
+
+
+
+
 ALGORITMO
-    Leer(numeroDatos)
-	listaNumeros <-- leerDatosEntrada(numeroDatos)
-	desviacion <-- calcularDesviacionEstandar(listanumeros)
-	Escribir(desviación)
+    AnalisiLogTrack.generarInformesTrack()
 FIN
