@@ -61,7 +61,7 @@ public class AnalisisLogTrack {
 			arrayFC[i] = pInfo.frecCardiaca[i];
 		}
 
-		FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, false);
+		FuncionalidadAuxiliar.generarTrackPlot(arrayDistancias, arrayFC, pInfo.altitud, pFichero, true);
 		//FuncionalidadAuxiliar.eliminarPlots();
 	}
 
@@ -206,8 +206,10 @@ public class AnalisisLogTrack {
 				System.out.println("Z5 Anaeróbico: " + String.format("%.2f", anaerobico));
 
 				System.out.println("\n");
-				//Generar la gráfica
+				//Generar las gráficas
 				graficarPerfil(atletaTrackpoints, String.format("GeneratedPlots\\%s\\plot-%s-0%d.png", String.format("Athlete%d",i), String.format("Athlete%d",i), j));
+				//Eliminar las gráficas
+				FuncionalidadAuxiliar.eliminarPlots();
 			}
 		}
 
